@@ -92,7 +92,7 @@ function updateRestaurant(req, res, next){
 		res.status(200)
 		.json({
 			status : 'Exitoso',
-			message: 'Removido un restaurante'
+			message: 'Actualizado un restaurante'
 		});
 	})
 	.catch(function(err){
@@ -224,6 +224,56 @@ function getMenusByRestaurant(req, res, next){
 	});
 };
 
+//Retorna los menues por id
+function getMenuById(req, res, next){
+	var id=req.params.id;
+	db.any('select * from menu where id = $1 ', id)
+	.then(function(data){
+		res.status(200)
+		.json({
+			status : 'Exitoso',
+			data: data,
+			message: 'Recuperados menues por menu'
+		});
+	})
+	.catch(function(err){
+		return next(err);
+	});
+};
+
+//Actualiza menu
+function updateMenu(req, res, next){
+
+	db.none('update menu set name=$1, description=$2, price=$3, restaurant=$4 where id=$5',
+		[req.body.name,req.body.description,req.body.price, parseInt(req.body.restaurant), parseInt(req.params.id)])
+	.then(function(){
+		res.status(200)
+		.json({
+			status : 'Exitoso',
+			message: 'Actualizado un menu'
+		});
+	})
+	.catch(function(err){
+		return next(err);
+	});
+};
+
+//Retorna los menus por nombre
+function removeMenu(req, res, next){
+	var menuId = parseInt(req.params.id);
+	db.result('delete from menu where id=$1', menuId)
+	.then(function(){
+		res.status(200)
+		.json({
+			status : 'Exitoso',
+			message: 'Removido un menu'
+		});
+	})
+	.catch(function(err){
+		return next(err);
+	});
+};
+
 
 module.exports= {
 	getAllRestaurants: getAllRestaurants,
@@ -233,5 +283,8 @@ module.exports= {
 	updateRestaurant: updateRestaurant,
 	getAllMenus: getAllMenus,
 	createMenu: createMenu,
-	getMenusByRestaurant: getMenusByRestaurant
+	getMenuById: getMenuById,
+	getMenusByRestaurant: getMenusByRestaurant,
+	updateMenu: updateMenu,
+	removeMenu: removeMenu
 };

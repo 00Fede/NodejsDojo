@@ -4,14 +4,17 @@ var router = express.Router();
 var db = require("./queries");
 
 //creamos una ruta con el método que llama
-router.get('/api/restaurants', db.getAllRestaurants);
-router.get('/api/restaurants/:name', db.getRestaurantByName);
-router.post('/api/restaurants/', db.createRestaurant);
-router.delete('/api/restaurants/:id', db.removeRestaurant);
-router.put('/api/restaurants/:id', db.updateRestaurant);
+router.get('/api/restaurants/', db.getAllRestaurants);
+router.get('/api/restaurant/:name', db.getRestaurantByName);
+router.post('/api/restaurant/', db.createRestaurant);
+router.delete('/api/restaurant/:id', db.removeRestaurant);
+router.put('/api/restaurant/:id', db.updateRestaurant);
 router.get('/api/menues/', db.getAllMenus);
-router.post('/api/menues/:id', db.createMenu);
+router.post('/api/menu/', db.createMenu);
 router.get('/api/menues-by-restaurant/:restaurant_id', db.getMenusByRestaurant);
+router.get('/api/menu/:id',db.getMenuById);
+router.put('/api/menu/:id',db.updateMenu);
+router.delete('/api/menu/:id',db.removeMenu);
 
 module.exports = router;
 
